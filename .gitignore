@@ -1,0 +1,36 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+
+# Build output
+bin/
+obj/
+
+
+# ASP.NET Core
+appsettings.Development.json
+
+
+# Node / React / Vite
+node_modules/
+dist/
+
+
+# Environment variables
+.env
+
+
+# IDEs
+.idea/
+.vscode/
+
+
+# Logs
+*.log
+
+
+# OS files
+.DS_Store
+Thumbs.db
