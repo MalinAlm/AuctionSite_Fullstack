@@ -10,10 +10,9 @@ namespace Auction.Api.Entities
         public string Description { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]
-        public decimal StratingPrice { get; set; }
+        public decimal StartingPrice { get; set; }
         public DateTime StartsAt { get; set; }
         public DateTime EndsAt { get; set; }
-
         public string UserId { get; set; }
         public User User { get; set; }
     }
