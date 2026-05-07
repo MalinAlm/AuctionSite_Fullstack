@@ -1,0 +1,55 @@
+﻿using Auction.Api.DTOs;
+using Auction.Api.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Auction.Api.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthController : ControllerBase
+    {
+        private readonly IUserService _userService;
+
+        public AuthController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(RegisterRequest request)
+        {
+            var user = await _userService.RegisterAsync(request);
+
+            if (user == null)
+            {
+                return BadRequest("Email is already registered.");
+
+            }
+
+            return Ok(
+                new
+                {
+                    user.Id,
+                    user.UserName,
+                    user.Email,
+                    user.Role
+                });
+        }
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(LoginRequest request)
+        {
+            var user = await  _userService.LoginAsync(request);
+
+            if (user == null)
+            {
+                return Unauthorized("Invalid email or password");
+            }
+
+            var token = _userService.GenerateToken(user);
+
+            return Ok(new { token });
+        }
+
+     }
+}
