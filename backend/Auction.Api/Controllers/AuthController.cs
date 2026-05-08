@@ -26,14 +26,15 @@ namespace Auction.Api.Controllers
 
             }
 
-            return Ok(
-                new
-                {
-                    user.Id,
-                    user.UserName,
-                    user.Email,
-                    user.Role
-                });
+            var response = new UserResponseDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Role = user.Role,
+            };
+
+            return Ok(response);
         }
 
         [HttpPost("Login")]
