@@ -24,6 +24,7 @@ namespace Auction.Api
 
 
             builder.Services.AddControllers();
+            builder.Services.AddCors();
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
@@ -54,6 +55,13 @@ namespace Auction.Api
             var app = builder.Build();
 
             app.UseRouting();
+
+            app.UseCors(
+                options => options.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                );
+
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
