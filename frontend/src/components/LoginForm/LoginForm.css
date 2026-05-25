@@ -1,0 +1,31 @@
+.login-form-container {
+  background-color: rgb(129, 154, 255);
+  min-height: 40vh;
+  min-width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 8px;
+  padding: 1em;
+  padding-bottom: 0;
+  box-shadow: 0 0 20px rgb(85, 85, 85);
+}
+
+.form-input-button {
+  height: 2rem;
+  border-radius: 6px;
+  background-color: rgb(236, 239, 255);
+}
+
+@media (min-width: 768px) {
+  .login-form-container {
+    min-width: 40%;
+    max-width: 60%;
+    min-height: 60vh;
+  }
+
+  .form-input-button {
+    min-width: 20rem;
+  }
+}

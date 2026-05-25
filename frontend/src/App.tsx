@@ -1,7 +1,12 @@
 import "./App.css";
+import LoginView from "./views/auth/LoginView/LoginView";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <LoginView />
+    </>
+  );
 }
 
 export default App;
