@@ -1,7 +1,8 @@
-import { login } from "../../../services/AuthService";
+import { login } from "../../services/AuthService";
 import { useState } from "react";
+import "./LoginForm.css";
 
-const TestForm = () => {
+const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState<string>("");
@@ -13,25 +14,29 @@ const TestForm = () => {
   };
 
   return (
-    <>
+    <div className="login-form-container">
       <input
+        className="form-input-button"
         type="text"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
-        type="text"
+        className="form-input-button"
+        type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <button onClick={handleLogin}>Logga in</button>
+      <button className="form-input-button" onClick={handleLogin}>
+        Sign in
+      </button>
 
       <p>{message}</p>
-    </>
+    </div>
   );
 };
 
-export default TestForm;
+export default LoginForm;

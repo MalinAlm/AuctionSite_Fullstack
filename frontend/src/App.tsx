@@ -1,10 +1,10 @@
 import "./App.css";
-import TestForm from "./components/Login/TestForm/TestForm";
+import LoginView from "./views/auth/LoginView/LoginView";
 
 function App() {
   return (
     <>
-      <TestForm />
+      <LoginView />
     </>
   );
 }
