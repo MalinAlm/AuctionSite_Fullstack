@@ -15,5 +15,6 @@ namespace Auction.Api.Entities
         public DateTime EndsAt { get; set; }
         public string UserId { get; set; }
         public User User { get; set; }
+        public ICollection<Bid> Bids { get; set; } = new List<Bid>();
     }
 }
