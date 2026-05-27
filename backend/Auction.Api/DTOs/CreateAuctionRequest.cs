@@ -5,10 +5,10 @@ namespace Auction.Api.DTOs
     public class CreateAuctionRequest
     {
         [Required]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         [Required]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         [Range(1, double.MaxValue)]
         public decimal StartingPrice { get; set; }

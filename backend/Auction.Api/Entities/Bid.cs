@@ -12,10 +12,10 @@ namespace Auction.Api.Entities
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public string AuctionId { get; set; } = string.Empty;
-        public Auction Auction { get; set; } = null;
+        public Auction? Auction { get; set; }
 
         public string UserId { get; set; } = string.Empty;
-        public User User { get; set; } = null;
+        public User? User { get; set; }
 
     }
 }
