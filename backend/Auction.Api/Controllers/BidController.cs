@@ -44,5 +44,27 @@ namespace Auction.Api.Controllers
 
             return Ok(result);
         }
+
+
+        [Authorize]
+        [HttpDelete("auction/{auctionId}/latest")]
+        public async Task<IActionResult> DeleteLatestBid(string auctionId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Unauthorized("User could not be identified");
+            }
+
+            var result = await _bidService.DeleteLatestBidAsync(auctionId, userId);
+
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return Ok(result);
+        }
     }
 }

@@ -8,5 +8,9 @@ namespace Auction.Api.Interfaces
             string auctionId,
             string userId,
             CreateBidRequest request);
+
+        Task<CreateBidResponse> DeleteLatestBidAsync(
+            string auctionId,
+            string userId);
     }
 }

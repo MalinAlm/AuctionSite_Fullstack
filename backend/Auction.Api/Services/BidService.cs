@@ -108,5 +108,56 @@ namespace Auction.Api.Services
                 }
             };
         }
+
+
+        public async Task<CreateBidResponse> DeleteLatestBidAsync(
+            string auctionId,
+            string userId)
+        {
+            var auction = await _context.Auctions
+                .Include(auction => auction.Bids)
+                .FirstOrDefaultAsync(auction => auction.Id == auctionId);
+
+            if (auction.EndsAt <= DateTime.Now)
+            {
+                return new CreateBidResponse
+                {
+                    Success = false,
+                    Message = "You cannot delete a bid from a closed auction."
+                };
+            }
+
+            var latestBid = auction.Bids
+                .OrderByDescending(bid => bid.CreatedAt)
+                .FirstOrDefault();
+
+            if (latestBid == null)
+            {
+                return new CreateBidResponse
+                {
+                    Success = false,
+                    Message = "There are no bids to delete."
+                };
+            }
+
+
+            if (latestBid.UserId != userId)
+            {
+                return new CreateBidResponse
+                {
+                    Success = false,
+                    Message = "You can only delete your own latest bid."
+                };
+            }
+
+            _context.Bids.Remove(latestBid);
+            await _context.SaveChangesAsync();
+
+            return new CreateBidResponse
+            {
+                Success = true,
+                Message = "Bid was deleted successfully"
+            };
+        }
     }
 }
