@@ -4,12 +4,12 @@ namespace Auction.Api.Interfaces
 {
     public interface IBidService
     {
-        Task<CreateBidResponse> CreateBidAsync(
+        Task<BidActionResponse> CreateBidAsync(
             string auctionId,
             string userId,
             CreateBidRequest request);
 
-        Task<CreateBidResponse> DeleteLatestBidAsync(
+        Task<BidActionResponse> DeleteLatestBidAsync(
             string auctionId,
             string userId);
     }

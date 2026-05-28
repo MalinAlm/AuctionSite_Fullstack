@@ -16,7 +16,7 @@ namespace Auction.Api.Services
             _context = context;
         }
 
-        public async Task<CreateBidResponse> CreateBidAsync(string auctionId, string userId, CreateBidRequest request)
+        public async Task<BidActionResponse> CreateBidAsync(string auctionId, string userId, CreateBidRequest request)
         {
             var auction = await _context.Auctions
                 .Include(auction => auction.Bids)
@@ -25,7 +25,7 @@ namespace Auction.Api.Services
 
             if (auction == null)
             {
-                return new CreateBidResponse
+                return new BidActionResponse
                 {
                     Success = false,
                     Message = "Auction was not found"
@@ -34,7 +34,7 @@ namespace Auction.Api.Services
 
             if (auction.UserId == userId)
             {
-                return new CreateBidResponse
+                return new BidActionResponse
                 {
                     Success = false,
                     Message = "You cannot place a bid on your own auction"
@@ -43,7 +43,7 @@ namespace Auction.Api.Services
 
             if (auction.EndsAt <= DateTime.Now)
             {
-                return new CreateBidResponse
+                return new BidActionResponse
                 {
                     Success = false,
                     Message = "You cannot place a bid on a closed auction"
@@ -57,7 +57,7 @@ namespace Auction.Api.Services
 
             if (request.Amount <= highestBidAmount)
             {
-                return new CreateBidResponse
+                return new BidActionResponse
                 {
                     Success = false,
                     Message = $"Your bid must be higher than {highestBidAmount}"
@@ -82,7 +82,7 @@ namespace Auction.Api.Services
             }
             catch (Exception)
             {
-                return new CreateBidResponse
+                return new BidActionResponse
                 {
                     Success = false,
                     Message = "Something went wrong while saving the bid."
@@ -92,7 +92,7 @@ namespace Auction.Api.Services
             var user = await _context.Users
                 .FirstOrDefaultAsync(user => user.Id == userId);
 
-            return new CreateBidResponse
+            return new BidActionResponse
             {
                 Success = true,
                 Message = "Bid was created successfully.",
@@ -110,7 +110,7 @@ namespace Auction.Api.Services
         }
 
 
-        public async Task<CreateBidResponse> DeleteLatestBidAsync(
+        public async Task<BidActionResponse> DeleteLatestBidAsync(
             string auctionId,
             string userId)
         {
@@ -118,9 +118,18 @@ namespace Auction.Api.Services
                 .Include(auction => auction.Bids)
                 .FirstOrDefaultAsync(auction => auction.Id == auctionId);
 
+            if (auction == null)
+            {
+                return new BidActionResponse
+                {
+                    Success = false,
+                    Message = "Auction was not found."
+                };
+            }
+
             if (auction.EndsAt <= DateTime.Now)
             {
-                return new CreateBidResponse
+                return new BidActionResponse
                 {
                     Success = false,
                     Message = "You cannot delete a bid from a closed auction."
@@ -133,7 +142,7 @@ namespace Auction.Api.Services
 
             if (latestBid == null)
             {
-                return new CreateBidResponse
+                return new BidActionResponse
                 {
                     Success = false,
                     Message = "There are no bids to delete."
@@ -143,7 +152,7 @@ namespace Auction.Api.Services
 
             if (latestBid.UserId != userId)
             {
-                return new CreateBidResponse
+                return new BidActionResponse
                 {
                     Success = false,
                     Message = "You can only delete your own latest bid."
@@ -153,7 +162,7 @@ namespace Auction.Api.Services
             _context.Bids.Remove(latestBid);
             await _context.SaveChangesAsync();
 
-            return new CreateBidResponse
+            return new BidActionResponse
             {
                 Success = true,
                 Message = "Bid was deleted successfully"

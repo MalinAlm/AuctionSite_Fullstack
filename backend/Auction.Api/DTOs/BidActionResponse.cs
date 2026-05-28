@@ -1,6 +1,6 @@
 ﻿namespace Auction.Api.DTOs
 {
-    public class CreateBidResponse
+    public class BidActionResponse
     {
         public bool Success { get; set; }
         public string Message { get; set; } = string.Empty;
