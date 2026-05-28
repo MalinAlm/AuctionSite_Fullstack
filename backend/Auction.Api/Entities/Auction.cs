@@ -13,6 +13,7 @@ namespace Auction.Api.Entities
         public decimal StartingPrice { get; set; }
         public DateTime StartsAt { get; set; }
         public DateTime EndsAt { get; set; }
+        public bool IsActive { get; set; } = true;
         public string UserId { get; set; } = string.Empty;
         public User? User { get; set; }
         public ICollection<Bid> Bids { get; set; } = new List<Bid>();

@@ -8,6 +8,8 @@
         public decimal StartingPrice { get; set; }
         public DateTime StartsAt { get; set; }
         public DateTime EndsAt { get; set; }
+
+        public bool IsActive { get; set; }
         public bool IsOpen { get; set; }
 
         public string UserId { get; set; } = string.Empty;

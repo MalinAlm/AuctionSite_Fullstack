@@ -107,6 +107,7 @@ namespace Auction.Api.Services
                 StartingPrice = auction.StartingPrice,
                 StartsAt = auction.StartsAt,
                 EndsAt = auction.EndsAt,
+                IsActive = auction.IsActive,
                 IsOpen = auction.EndsAt > DateTime.Now,
                 UserId = auction.UserId,
                 UserName = auction.User?.UserName ?? string.Empty,
