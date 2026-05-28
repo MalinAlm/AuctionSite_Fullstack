@@ -21,8 +21,11 @@ namespace Auction.Api.Services
                 .Include(auction=> auction.Bids)
                 .ThenInclude(bid => bid.User)
                 .Where(auction =>
-                showClosedAuctions || 
-                auction.EndsAt > DateTime.Now)
+                auction.IsActive && 
+                (
+                    showClosedAuctions || 
+                    auction.EndsAt > DateTime.Now
+                ))
                 .ToListAsync();
 
             return auctions
@@ -37,7 +40,9 @@ namespace Auction.Api.Services
                 .Include(auction => auction.User)
                 .Include(auction => auction.Bids)
                 .ThenInclude(bid => bid.User)
-                .FirstOrDefaultAsync(auction => auction.Id == auctionId);
+                .FirstOrDefaultAsync(auction =>
+                 auction.Id == auctionId && 
+                 auction.IsActive);
 
             if (auction == null)
             {
@@ -84,6 +89,7 @@ namespace Auction.Api.Services
                 .Include(auction => auction.Bids)
                 .ThenInclude(bid => bid.User)
                 .Where(auction => 
+                    auction.IsActive &&
                     auction.Title.Contains(title) && 
                     (
                         showClosedAuctions ||
