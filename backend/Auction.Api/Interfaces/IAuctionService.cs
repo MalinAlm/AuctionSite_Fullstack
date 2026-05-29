@@ -8,5 +8,6 @@ namespace Auction.Api.Interfaces
         Task<AuctionResponse?> GetAuctionByIdAsync(string auctionId);
         Task<AuctionResponse?> CreateAuctionAsync(CreateAuctionRequest request, string userId);
         Task<List<AuctionResponse>> SearchAuctionsAsync(string title, bool showClosedAuctions);
+        Task<AuctionResponse?> UpdateAuctionAsync(string auctionId, string userId, UpdateAuctionRequest request);
     }
 }

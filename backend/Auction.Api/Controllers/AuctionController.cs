@@ -81,5 +81,32 @@ namespace Auction.Api.Controllers
 
             return Ok(auctions);
         }
+
+
+        [Authorize]
+        [HttpPut("{auctionId}")]
+        public async Task<IActionResult> UpdateAuction(
+            string auctionId,
+            UpdateAuctionRequest request)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Unauthorized("User could not be identified");
+            }
+
+            var updatedAuction = await _auctionService.UpdateAuctionAsync(
+                auctionId,
+                userId,
+                request);
+
+            if (updatedAuction == null)
+            {
+                return BadRequest("Auction could not be updated");
+            }
+
+            return Ok(updatedAuction);
+        }
     }
 }

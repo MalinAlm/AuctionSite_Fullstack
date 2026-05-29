@@ -117,7 +117,20 @@ namespace Auction.Api.Services
                 IsOpen = auction.EndsAt > DateTime.Now,
                 UserId = auction.UserId,
                 UserName = auction.User?.UserName ?? string.Empty,
-                Bids = auction.Bids
+                Bids = auction.EndsAt <= DateTime.Now
+                ? auction.Bids
+                    .OrderByDescending(bid => bid.Amount)
+                    .Take(1)
+                    .Select(bid => new BidResponse
+                    {
+                        Id = bid.Id,
+                        Amount = bid.Amount,
+                        CreatedAt = bid.CreatedAt,
+                        UserId = bid.UserId,
+                        UserName = bid.User?.UserName ?? string.Empty,
+                    })
+                    .ToList()
+                 : auction.Bids
                     .OrderByDescending(bid => bid.Amount)
                     .Select(bid => new BidResponse
                     {
@@ -129,6 +142,45 @@ namespace Auction.Api.Services
                     })
                     .ToList()
             };
+        }
+
+
+        public async Task<AuctionResponse?> UpdateAuctionAsync(
+            string auctionId,
+            string userId,
+            UpdateAuctionRequest request)
+        {
+            var auction = await _context.Auctions
+                .Include(auction => auction.Bids)
+                .Include(auction => auction.User)
+                .FirstOrDefaultAsync(auction => auction.Id == auctionId);
+
+            if (auction == null) return null;
+
+            if (auction.UserId != userId) return null;
+
+            if(auction.EndsAt <= DateTime.Now) return null;
+
+            var hasBids = auction.Bids.Any();
+
+            if (hasBids && request.StartingPrice != auction.StartingPrice) return null;
+
+            if(request.EndsAt <= request.StartsAt) return null;
+
+            auction.Title = request.Title;
+            auction.Description = request.Description;
+            auction.StartsAt = request.StartsAt;
+            auction.EndsAt = request.EndsAt;
+
+            if (!hasBids)
+            {
+                auction.StartingPrice = request.StartingPrice;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return MapToAuctionResponse(auction);
+                
         }
 
     }
