@@ -3,7 +3,7 @@ import type {
   LoginRequest,
   JwtResponse,
 } from "../types/Types";
-import { setToken, baseUrl } from "../utils/TokenHandler";
+import { baseUrl } from "../utils/TokenHandler";
 
 export const login = async (request: LoginRequest) => {
   const response = await fetch(`${baseUrl}/Auth/Login`, {
@@ -15,12 +15,12 @@ export const login = async (request: LoginRequest) => {
     body: JSON.stringify(request),
   });
 
-  if (response.ok) {
-    const jwt: JwtResponse = await response.json();
-    setToken(jwt.token);
+  if (!response.ok) {
+    return null;
   }
 
-  return response.ok;
+  const jwt: JwtResponse = await response.json();
+  return jwt.token;
 };
 
 export const register = async (request: RegisterRequest) => {
