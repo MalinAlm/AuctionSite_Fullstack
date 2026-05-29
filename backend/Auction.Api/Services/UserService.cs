@@ -44,7 +44,7 @@ namespace Auction.Api.Services
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(15),
+                expires: DateTime.Now.AddMinutes(60),
                 signingCredentials: signinCredentials);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);  
@@ -105,6 +105,36 @@ namespace Auction.Api.Services
             await _context.SaveChangesAsync();
 
             return user;
+        }
+
+
+        public async Task<bool> ChangePasswordAsync(string userId, ChangePasswordRequest request)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(user => user.Id == userId);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            var passwordResult = _passwordHasher.VerifyHashedPassword(
+                user,
+                user.PasswordHash,
+                request.CurrentPassword);
+
+            if (passwordResult == PasswordVerificationResult.Failed)
+            {
+                return false;
+            }
+
+            user.PasswordHash = _passwordHasher.HashPassword(
+                user,
+                request.NewPassword);
+
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

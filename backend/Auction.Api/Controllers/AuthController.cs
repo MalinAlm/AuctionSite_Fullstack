@@ -1,6 +1,9 @@
 ﻿using Auction.Api.DTOs;
 using Auction.Api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Auction.Api.Controllers
 {
@@ -50,6 +53,28 @@ namespace Auction.Api.Controllers
             var token = _userService.GenerateToken(user);
 
             return Ok(new { token });
+        }
+
+
+        [Authorize]
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequest request)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Unauthorized("User could not be identified.");
+            }
+
+            var success = await _userService.ChangePasswordAsync(userId, request);
+
+            if (!success)
+            {
+                return BadRequest("Password could not be changed. Check your current password");
+            }
+
+            return Ok("Password was changed successfully");
         }
 
      }

@@ -1,10 +1,12 @@
 import "./App.css";
-import LoginView from "./views/auth/LoginView/LoginView";
+import Header from "./components/Header/Header";
+import Main from "./views/Main/Main";
 
 function App() {
   return (
     <>
-      <LoginView />
+      <Header />
+      <Main />
     </>
   );
 }

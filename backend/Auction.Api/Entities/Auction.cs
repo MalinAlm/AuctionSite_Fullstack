@@ -6,14 +6,16 @@ namespace Auction.Api.Entities
     public class Auction
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string Title { get; set; }
-        public string Description { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
 
         [Column(TypeName = "decimal(10,2)")]
         public decimal StartingPrice { get; set; }
         public DateTime StartsAt { get; set; }
         public DateTime EndsAt { get; set; }
-        public string UserId { get; set; }
-        public User User { get; set; }
+        public bool IsActive { get; set; } = true;
+        public string UserId { get; set; } = string.Empty;
+        public User? User { get; set; }
+        public ICollection<Bid> Bids { get; set; } = new List<Bid>();
     }
 }

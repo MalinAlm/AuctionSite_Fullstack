@@ -1,4 +1,14 @@
 body {
   background-color: rgb(249, 252, 255);
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  min-height: 100vh;
+  margin: 0;
+}
+
+li {
+  list-style: none;
+}
+
+nav a {
+  text-decoration: none;
 }

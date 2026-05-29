@@ -28,6 +28,9 @@ namespace Auction.Api
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+            builder.Services.AddScoped<IAuctionService, AuctionService>();
+            builder.Services.AddScoped<IBidService, BidService>();
+            builder.Services.AddScoped<IAdminService, AdminService>();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
