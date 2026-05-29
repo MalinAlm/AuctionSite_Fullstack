@@ -10,7 +10,7 @@ const AuctionCard = ({ auction }: any) => {
     <div className="auction-card-container">
       <div>
         <h3>Här ligger en bild på varan</h3>
-        <img src="" alt="" />
+        {/* <img src="" alt="" /> */}
       </div>
       <div>
         <h4>{auction.title}</h4>
