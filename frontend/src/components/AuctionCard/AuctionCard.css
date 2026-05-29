@@ -7,4 +7,10 @@
   gap: 1em;
   border-radius: 8px;
   box-shadow: 0 0 20px rgb(193, 193, 193);
+  margin: 2em;
+}
+
+.bid-history {
+  margin-top: 1rem;
+  overflow: hidden;
 }

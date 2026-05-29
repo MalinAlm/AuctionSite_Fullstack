@@ -9,15 +9,19 @@ export interface RegisterRequest {
   password: string;
 }
 
-// export interface Auction {
-//   title: string;
-//   description: string;
-//   startingPrice: number;
-//   startsAt: Date;
-//   endsAt: Date;
-//   userId: string;
-//   user: User;
-// }
+export interface Auction {
+  id: string;
+  title: string;
+  description: string;
+  startingPrice: number;
+  startsAt: string;
+  endsAt: string;
+  isOpen: boolean;
+  isActive: boolean;
+  userId: string;
+  userName: string;
+  bids: [];
+}
 
 export interface JwtResponse {
   token: string;
