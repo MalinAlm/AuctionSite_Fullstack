@@ -30,6 +30,14 @@ export interface Auction {
   bids: Bid[];
 }
 
+export interface CreateAuctionRequest {
+  title: string;
+  description: string;
+  startingPrice: number;
+  startsAt: string;
+  endsAt: string;
+}
+
 export interface CreateBidRequest {
   amount: number;
 }

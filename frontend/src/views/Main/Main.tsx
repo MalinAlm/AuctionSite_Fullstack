@@ -3,6 +3,7 @@ import AuctionsView from "../Auctions/AuctionsView";
 import LoginView from "../auth/LoginView/LoginView";
 import ProtectedRoute from "../../components/ProtectedRoute/ProtectedRoute";
 import AuctionDetailsView from "../AuctionDetails/AuctionDetailsView";
+import CreateAuctionView from "../CreateAuction/CreateAuctionView";
 
 const Main = () => {
   return (
@@ -16,7 +17,7 @@ const Main = () => {
           path="/create-auction"
           element={
             <ProtectedRoute>
-              <div>Create auction Page</div>
+              <CreateAuctionView />
             </ProtectedRoute>
           }
         />

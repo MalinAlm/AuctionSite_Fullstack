@@ -1,5 +1,18 @@
 import { getToken, baseUrl } from "../utils/TokenHandler";
-import type { Auction } from "../types/Types";
+import type { CreateAuctionRequest, Auction } from "../types/Types";
+
+export const createAuction = async (request: CreateAuctionRequest) => {
+  const response = await fetch(`${baseUrl}/auction`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + getToken(),
+    },
+    body: JSON.stringify(request),
+  });
+
+  return response.ok;
+};
 
 export const getAuctions = async (): Promise<Auction[]> => {
   const response = await fetch(`${baseUrl}/auction`, {
