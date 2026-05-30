@@ -14,5 +14,13 @@ export const createBid = async (
     body: JSON.stringify(request),
   });
 
+  if (!response.ok) {
+    return {
+      success: false,
+      message: "Could not create bid",
+      bid: null,
+    };
+  }
+
   return await response.json();
 };
