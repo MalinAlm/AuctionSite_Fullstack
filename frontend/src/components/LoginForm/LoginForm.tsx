@@ -2,6 +2,7 @@ import { login as loginUser } from "../../services/AuthService";
 import { useState } from "react";
 import "./LoginForm.css";
 import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -9,13 +10,15 @@ const LoginForm = () => {
   const [message, setMessage] = useState<string>("");
 
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     const token = await loginUser({ email, password });
 
     if (token) {
       login(token);
-      setMessage("You are logged in");
+      navigate("/");
+      // setMessage("You are logged in");
     } else {
       setMessage("Invalid login");
     }

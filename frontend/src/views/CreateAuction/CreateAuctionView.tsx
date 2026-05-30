@@ -1,7 +1,7 @@
 import "./CreateAuctionView.css";
-
 import { useState } from "react";
 import { createAuction } from "../../services/AuctionService";
+import { useNavigate } from "react-router";
 
 const CreateAuctionView = () => {
   const [title, setTitle] = useState("");
@@ -10,6 +10,8 @@ const CreateAuctionView = () => {
   const [startsAt, setStartsAt] = useState("");
   const [endsAt, setEndsAt] = useState("");
   const [message, setMessage] = useState("");
+
+  const navigate = useNavigate();
 
   const handleCreateAuction = async () => {
     const now = new Date();
@@ -40,9 +42,12 @@ const CreateAuctionView = () => {
       endsAt,
     });
 
-    setMessage(
-      success ? "Auction created successfully." : "Could not create auction.",
-    );
+    if (success) {
+      navigate("/");
+      return;
+    }
+
+    setMessage("Could not create auction.");
   };
 
   return (
