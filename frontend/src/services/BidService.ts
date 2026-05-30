@@ -24,3 +24,25 @@ export const createBid = async (
 
   return await response.json();
 };
+
+export const deleteLatestBid = async (
+  auctionId: string,
+): Promise<BidActionResponse> => {
+  const response = await fetch(`${baseUrl}/bid/auction/${auctionId}/latest`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + getToken(),
+    },
+  });
+
+  if (!response.ok) {
+    return {
+      success: false,
+      message: "Could not delete bid.",
+      bid: null,
+    };
+  }
+
+  return await response.json();
+};

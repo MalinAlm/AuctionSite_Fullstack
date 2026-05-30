@@ -17,6 +17,20 @@ const getRoleFromToken = (token: string | null) => {
   }
 };
 
+const getUserIdFromToken = (token: string | null) => {
+  try {
+    if (!token) return null;
+
+    const payload = JSON.parse(atob(token.split(".")[1]));
+
+    return payload[
+      "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+    ];
+  } catch {
+    return null;
+  }
+};
+
 const isTokenExpired = (token: string | null) => {
   try {
     if (!token) return true;
@@ -44,6 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   const role = getRoleFromToken(token);
+  const userId = getUserIdFromToken(token);
 
   const login = (token: string) => {
     localStorage.setItem("token", token);
@@ -58,6 +73,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <AuthContext.Provider
       value={{
+        userId,
         token,
         isLoggedIn: !!token,
         isAdmin: role === "Admin",

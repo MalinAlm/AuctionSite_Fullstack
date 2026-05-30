@@ -45,6 +45,7 @@ export interface JwtResponse {
 
 export type AuthContextType = {
   token: string | null;
+  userId: string | null;
   isLoggedIn: boolean;
   isAdmin: boolean;
   login: (token: string) => void;

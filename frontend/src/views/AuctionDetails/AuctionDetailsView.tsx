@@ -5,12 +5,28 @@ import { getAuctionById } from "../../services/AuctionService";
 import type { Auction } from "../../types/Types";
 import BidForm from "../../components/BidForm/BidForm";
 import { useAuth } from "../../contexts/AuthContext";
+import { deleteLatestBid } from "../../services/BidService";
 
 const AuctionDetailsView = () => {
   const { id } = useParams();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, userId } = useAuth();
+
   const [auction, setAuction] = useState<Auction | null>(null);
   const [message, setMessage] = useState("");
+
+  const latestBid = auction && auction.bids.length > 0 ? auction.bids[0] : null;
+
+  const isAuctionOwner = auction?.userId === userId;
+  const isAuctionOpen = auction?.isOpen === true;
+  const hasBids = auction ? auction.bids.length > 0 : false;
+
+  const shouldShowClosedMessage = auction && !isAuctionOpen;
+  const shouldShowSignInMessage = auction && isAuctionOpen && !isLoggedIn;
+  const shouldShowOwnerMessage =
+    auction && isAuctionOpen && isLoggedIn && isAuctionOwner;
+
+  const shouldShowBidForm =
+    auction && isAuctionOpen && isLoggedIn && !isAuctionOwner;
 
   const fetchAuction = async () => {
     if (!id) return;
@@ -18,6 +34,7 @@ const AuctionDetailsView = () => {
     try {
       const data = await getAuctionById(id);
       setAuction(data);
+      setMessage("");
     } catch {
       setMessage("Could not load auction.");
     }
@@ -27,45 +44,66 @@ const AuctionDetailsView = () => {
     fetchAuction();
   }, [id]);
 
-  if (message) {
-    return <p>{message}</p>;
-  }
+  const handleDeleteLatestBid = async () => {
+    if (!auction) return;
 
-  if (!auction) {
-    return <p>Loading aution...</p>;
-  }
+    const result = await deleteLatestBid(auction.id);
+
+    setMessage(result.message);
+
+    if (result.success) {
+      fetchAuction();
+    }
+  };
+
   return (
     <div className="auction-details-container">
-      <h2>{auction.title}</h2>
-      <p>{auction.description}</p>
-      <p>Starting price: {auction.startingPrice} kr</p>
-      <p>Ends at: {auction.endsAt}</p>
+      {message && <p>{message}</p>}
 
-      {!auction.isOpen ? (
-        <p>This auction is closed</p>
-      ) : !isLoggedIn ? (
-        <p>Sign in to place a bid</p>
-      ) : auction.userId ===
-        JSON.parse(atob(localStorage.getItem("token")!.split(".")[1]))[
-          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
-        ] ? (
-        <p>You cannot bid on your own auction</p>
-      ) : (
-        <BidForm auctionId={auction.id} onBidCreated={fetchAuction} />
-      )}
+      {!auction && <p>Loading auction...</p>}
 
-      <h3>Bids</h3>
+      {auction && (
+        <>
+          <h2>{auction.title}</h2>
+          <p>{auction.description}</p>
+          <p>Starting price: {auction.startingPrice} kr</p>
+          <p>Ends at: {auction.endsAt}</p>
 
-      {auction.bids.length === 0 ? (
-        <p>No bids yet.</p>
-      ) : (
-        auction.bids.map((bid) => (
-          <div key={bid.id}>
-            <p>
-              {bid.amount} kr by {bid.userName}
-            </p>
-          </div>
-        ))
+          {shouldShowClosedMessage && <p>This auction is closed.</p>}
+
+          {shouldShowSignInMessage && <p>Sign in to place a bid.</p>}
+
+          {shouldShowOwnerMessage && <p>You cannot bid on your own auction.</p>}
+
+          {shouldShowBidForm && (
+            <BidForm auctionId={auction.id} onBidCreated={fetchAuction} />
+          )}
+
+          <h3>Bids</h3>
+
+          {!hasBids && <p>No bids yet.</p>}
+
+          {auction.bids.map((bid) => {
+            const canDeleteLatestBid =
+              isAuctionOpen &&
+              latestBid?.id === bid.id &&
+              bid.userId === userId;
+
+            return (
+              <div key={bid.id}>
+                <p>
+                  {bid.amount} kr by {bid.userName}
+                </p>
+
+                {canDeleteLatestBid && (
+                  <button onClick={handleDeleteLatestBid}>
+                    Delete latest bid
+                  </button>
+                )}
+              </div>
+            );
+          })}
+        </>
       )}
     </div>
   );
