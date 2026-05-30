@@ -19,7 +19,7 @@ const AuctionCard = ({ auction }: any) => {
         </NavLink>
         <p>{auction.description}</p>
 
-        <p>Starting price: {auction.startingPrice}</p>
+        <p>Starting price: {auction.startingPrice} kr</p>
         <p>
           Current highest bid:
           {highestBid ? highestBid.amount : "No bids yet"}
@@ -37,7 +37,7 @@ const AuctionCard = ({ auction }: any) => {
             {auction.bids.map((bid: any) => (
               <div key={bid.id}>
                 <p>
-                  {bid.amount} by {bid.userName}
+                  {bid.amount} kr by {bid.userName}
                 </p>
               </div>
             ))}

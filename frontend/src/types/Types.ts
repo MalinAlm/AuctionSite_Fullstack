@@ -29,6 +29,16 @@ export interface Auction {
   userName: string;
   bids: Bid[];
 }
+
+export interface CreateBidRequest {
+  amount: number;
+}
+
+export interface BidActionResponse {
+  success: boolean;
+  message: string;
+  bid: Bid | null;
+}
 export interface JwtResponse {
   token: string;
 }
