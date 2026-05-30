@@ -18,7 +18,6 @@ const LoginForm = () => {
     if (token) {
       login(token);
       navigate("/");
-      // setMessage("You are logged in");
     } else {
       setMessage("Invalid login");
     }
