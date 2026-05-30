@@ -1,30 +1,46 @@
 import { createContext, useContext, useState } from "react";
+import type { AuthContextType } from "../types/Types";
 
-type AuthContextType = {
-  token: string | null;
-  isLoggedIn: boolean;
-  isAdmin: boolean;
-  login: (token: string) => void;
-  logout: () => void;
+const getRoleFromToken = (token: string | null) => {
+  try {
+    if (!token) return null;
+
+    //atob converts Base64 to regular text
+    const payload = JSON.parse(atob(token.split(".")[1]));
+
+    //returns the role
+    return payload[
+      "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+    ];
+  } catch {
+    return null;
+  }
+};
+
+const isTokenExpired = (token: string | null) => {
+  try {
+    if (!token) return true;
+
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const expirationTime = payload.exp * 1000;
+
+    return Date.now() >= expirationTime;
+  } catch {
+    return true;
+  }
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const getRoleFromToken = (token: string | null) => {
-  if (!token) return null;
-
-  //atob converts Base64 to regular text
-  const payload = JSON.parse(atob(token.split(".")[1]));
-
-  //returns the role
-  return payload[
-    "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-  ];
-};
-
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const storedToken = localStorage.getItem("token");
+
+  if (storedToken && isTokenExpired(storedToken)) {
+    localStorage.removeItem("token");
+  }
+
   const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token"),
+    isTokenExpired(storedToken) ? null : storedToken,
   );
 
   const role = getRoleFromToken(token);

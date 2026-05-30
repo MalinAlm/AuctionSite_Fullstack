@@ -27,6 +27,10 @@ export interface JwtResponse {
   token: string;
 }
 
-// export interface Message {
-//   message: string;
-// }
+export type AuthContextType = {
+  token: string | null;
+  isLoggedIn: boolean;
+  isAdmin: boolean;
+  login: (token: string) => void;
+  logout: () => void;
+};
