@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./AuctionCard.css";
+import { NavLink } from "react-router";
 
 const AuctionCard = ({ auction }: any) => {
   const [showBidHistory, setShowBidHistory] = useState(false);
@@ -13,7 +14,9 @@ const AuctionCard = ({ auction }: any) => {
         {/* <img src="" alt="" /> */}
       </div>
       <div>
-        <h4>{auction.title}</h4>
+        <NavLink to={`/auction/${auction.id}`}>
+          <h4>{auction.title}</h4>
+        </NavLink>
         <p>{auction.description}</p>
 
         <p>Starting price: {auction.startingPrice}</p>
@@ -40,8 +43,6 @@ const AuctionCard = ({ auction }: any) => {
             ))}
           </div>
         )}
-        <input type="text" placeholder="Type in your bid" />
-        <button>Place bid</button>
       </div>
     </div>
   );

@@ -9,6 +9,13 @@ export interface RegisterRequest {
   password: string;
 }
 
+export interface Bid {
+  id: string;
+  amount: number;
+  createdAt: string;
+  userId: string;
+  userName: string;
+}
 export interface Auction {
   id: string;
   title: string;
@@ -20,9 +27,8 @@ export interface Auction {
   isActive: boolean;
   userId: string;
   userName: string;
-  bids: [];
+  bids: Bid[];
 }
-
 export interface JwtResponse {
   token: string;
 }
