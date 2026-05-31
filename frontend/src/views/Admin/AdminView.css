@@ -1,0 +1,30 @@
+.admin-view-container {
+  margin: 2rem;
+}
+
+.admin-flex-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.admin-section {
+  margin-bottom: 2rem;
+}
+
+.admin-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-card {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgb(193, 193, 193);
+  min-width: 30vw;
+}
+
+.admin-card button {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+}

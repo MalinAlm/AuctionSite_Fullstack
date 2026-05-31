@@ -65,3 +65,26 @@ export interface ChangePasswordRequest {
   currentPassword: string;
   newPassword: string;
 }
+
+export interface AdminUser {
+  id: string;
+  userName: string;
+  email: string;
+  role: string;
+  isActive: boolean;
+}
+
+export interface AdminAuction {
+  id: string;
+  title: string;
+  description: string;
+  startingPrice: number;
+  startsAt: string;
+  endsAt: string;
+  isOpen: boolean;
+  isActive: boolean;
+  userId: string;
+  userName: string;
+  bidCount: number;
+  highestBid: number | null;
+}

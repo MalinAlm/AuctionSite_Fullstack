@@ -6,6 +6,7 @@ import AuctionDetailsView from "../AuctionDetails/AuctionDetailsView";
 import CreateAuctionView from "../CreateAuction/CreateAuctionView";
 import UpdateAuctionView from "../UpdateAuction/UpdateAuctionView";
 import MyPagesView from "../MyPages/MyPagesView";
+import AdminView from "../Admin/AdminView";
 
 const Main = () => {
   return (
@@ -37,7 +38,7 @@ const Main = () => {
           path="/admin"
           element={
             <ProtectedRoute requireAdmin>
-              <div>Admin page</div>
+              <AdminView />
             </ProtectedRoute>
           }
         />
