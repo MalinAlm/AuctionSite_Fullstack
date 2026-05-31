@@ -54,8 +54,14 @@ export interface JwtResponse {
 export type AuthContextType = {
   token: string | null;
   userId: string | null;
+  userName: string | null;
   isLoggedIn: boolean;
   isAdmin: boolean;
   login: (token: string) => void;
   logout: () => void;
 };
+
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+}

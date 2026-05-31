@@ -2,8 +2,9 @@ import type {
   RegisterRequest,
   LoginRequest,
   JwtResponse,
+  ChangePasswordRequest,
 } from "../types/Types";
-import { baseUrl } from "../utils/TokenHandler";
+import { baseUrl, getToken } from "../utils/TokenHandler";
 
 export const login = async (request: LoginRequest) => {
   const response = await fetch(`${baseUrl}/Auth/Login`, {
@@ -30,6 +31,21 @@ export const register = async (request: RegisterRequest) => {
       "Content-Type": "application/json",
     },
 
+    body: JSON.stringify(request),
+  });
+
+  return response.ok;
+};
+
+export const changePassword = async (
+  request: ChangePasswordRequest,
+): Promise<boolean> => {
+  const response = await fetch(`${baseUrl}/Auth/change-password`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + getToken(),
+    },
     body: JSON.stringify(request),
   });
 
