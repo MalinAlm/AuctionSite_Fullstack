@@ -18,7 +18,7 @@ export const getAuctionById = async (auctionId: string): Promise<Auction> => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Barer" + getToken(),
+      Authorization: "Bearer " + getToken(),
     },
   });
 
@@ -52,4 +52,22 @@ export const updateAuction = async (
   });
 
   return response.ok;
+};
+
+export const searchAuctions = async (title: string): Promise<Auction[]> => {
+  const response = await fetch(
+    `${baseUrl}/auction/search?title=${encodeURIComponent(title)}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Could not search auctions");
+  }
+
+  return await response.json();
 };
