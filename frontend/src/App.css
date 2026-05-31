@@ -12,3 +12,7 @@ li {
 nav a {
   text-decoration: none;
 }
+
+button {
+  padding: 0.5rem 1rem;
+}

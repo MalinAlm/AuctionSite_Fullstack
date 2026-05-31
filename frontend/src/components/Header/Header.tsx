@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <div className="header-container">
       <h1>Auction Site</h1>
-      <nav>
+      <nav className="header-nav">
         <ul className="header-list">
           <li>
             <NavLink to="/">Home</NavLink>
@@ -20,19 +20,23 @@ const Header = () => {
           </li>
           <li>{isAdmin && <NavLink to="/admin">Admin</NavLink>}</li>
 
-          {isLoggedIn && (
-            <li>
-              Logged in as: <NavLink to="/my-pages">{userName}</NavLink>
-            </li>
-          )}
-
-          <li>
-            {!isLoggedIn ? (
-              <NavLink to="/login">Sign in</NavLink>
-            ) : (
-              <button onClick={logout}>Logout</button>
+          <div className="header-user-container">
+            {isLoggedIn && (
+              <li>
+                Logged in as: <NavLink to="/my-pages">{userName}</NavLink>
+              </li>
             )}
-          </li>
+
+            <li>
+              {!isLoggedIn ? (
+                <NavLink to="/login">Sign in</NavLink>
+              ) : (
+                <button className="login-button" onClick={logout}>
+                  Logout
+                </button>
+              )}
+            </li>
+          </div>
         </ul>
       </nav>
     </div>

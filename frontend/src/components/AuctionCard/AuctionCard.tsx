@@ -19,11 +19,11 @@ const AuctionCard = ({ auction }: any) => {
           className="auction-card-image"
         />
       </div>
-      <div>
+      <div className="text-container">
         <NavLink to={`/auction/${auction.id}`}>
           <h4>{auction.title}</h4>
         </NavLink>
-        <p>{auction.description}</p>
+        <p className="auction-card-description">{auction.description}</p>
 
         <p>Starting price: {auction.startingPrice} kr</p>
         <p>
