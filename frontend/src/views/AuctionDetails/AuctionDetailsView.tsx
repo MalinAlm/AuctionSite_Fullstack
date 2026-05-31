@@ -67,13 +67,22 @@ const AuctionDetailsView = () => {
 
       {auction && (
         <>
-          <h2>{auction.title}</h2>
-          <p>{auction.description}</p>
-          <p>Created by: {auction.userName}</p>
-          <p>Starting price: {auction.startingPrice} kr</p>
+          <h2 className="auction-details-heading">{auction.title}</h2>
+          <div className="auction-desctiption">
+            <h4>Beskrivning</h4>
+            <p>{auction.description}</p>
+          </div>
+          <div>
+            <p>
+              Created by: <b>{auction.userName} </b>
+            </p>
+            <p>
+              Starting price: <b>{auction.startingPrice} kr</b>{" "}
+            </p>
 
-          <p>Starts at: {formatDateTime(auction.startsAt)}</p>
-          <p>Ends at: {formatDateTime(auction.endsAt)}</p>
+            <p>Starts at: {formatDateTime(auction.startsAt)}</p>
+            <p>Ends at: {formatDateTime(auction.endsAt)}</p>
+          </div>
 
           {canEditAuction && (
             <NavLink to={`/auction/${auction.id}/edit`}>Edit auction</NavLink>
@@ -81,7 +90,7 @@ const AuctionDetailsView = () => {
 
           {shouldShowClosedMessage && <p>This auction is closed.</p>}
 
-          <h3>{isAuctionOpen ? "Bids" : "Winning bid"}</h3>
+          <h2>{isAuctionOpen ? "Bids" : "Winning bid"}</h2>
 
           {!hasBids && (
             <p>{isAuctionOpen ? "No bids yet" : "No winning bid"}</p>
@@ -96,12 +105,15 @@ const AuctionDetailsView = () => {
             return (
               <div key={bid.id}>
                 <p>
-                  {bid.amount} kr by {bid.userName}
+                  <b>{bid.amount} kr </b> by {bid.userName}
                 </p>
                 <p>{formatDateTime(bid.createdAt)}</p>
 
                 {canDeleteLatestBid && (
-                  <button onClick={handleDeleteLatestBid}>
+                  <button
+                    className="delete-bid-button"
+                    onClick={handleDeleteLatestBid}
+                  >
                     Delete latest bid
                   </button>
                 )}

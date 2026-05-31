@@ -10,6 +10,24 @@
     box-shadow: 0 0 20px rgb(193, 193, 193);
     margin: 2em;
   }
+
+  .auction-desctiption {
+    margin-bottom: 2rem;
+  }
+
+  .auction-desctiption h4,
+  .auction-desctiption p {
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .auction-details-heading {
+    margin-bottom: 2rem;
+  }
+
+  .delete-bid-button {
+    margin-bottom: 3rem;
+  }
 }
 
 @media (max-width: 767px) {
@@ -23,5 +41,23 @@
     border-radius: 8px;
     box-shadow: 0 0 20px rgb(193, 193, 193);
     margin: 2em;
+  }
+
+  .auction-desctiption {
+    margin-bottom: 2rem;
+  }
+
+  .auction-desctiption h4,
+  .auction-desctiption p {
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .auction-details-heading {
+    margin-bottom: 2rem;
+  }
+
+  .delete-bid-button {
+    margin-bottom: 3rem;
   }
 }
