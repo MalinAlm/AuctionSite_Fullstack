@@ -31,8 +31,8 @@ const Header = () => {
               {!isLoggedIn ? (
                 <NavLink to="/login">Sign in</NavLink>
               ) : (
-                <button className="login-button" onClick={logout}>
-                  Logout
+                <button className="sign-out-button" onClick={logout}>
+                  Sign out
                 </button>
               )}
             </li>
