@@ -1,11 +1,13 @@
 import { useState } from "react";
 import "./AuctionCard.css";
 import { NavLink } from "react-router";
+import { formatDateTime } from "../../utils/DateFormatter";
 
 const AuctionCard = ({ auction }: any) => {
   const [showBidHistory, setShowBidHistory] = useState(false);
 
   const highestBid = auction.bids?.length > 0 ? auction.bids[0] : null;
+  const isClosed = new Date(auction.endsAt) <= new Date();
 
   return (
     <div className="auction-card-container">
@@ -21,12 +23,11 @@ const AuctionCard = ({ auction }: any) => {
 
         <p>Starting price: {auction.startingPrice} kr</p>
         <p>
-          Current highest bid:
-          {highestBid ? highestBid.amount : "No bids yet"}
+          Highest bid: {highestBid ? highestBid.amount + " kr" : "No bids yet"}
         </p>
-        <p>Ends at: {auction.endsAt}</p>
+        <p>Ends at: {formatDateTime(auction.endsAt)}</p>
 
-        {auction.bids?.length > 0 && (
+        {!isClosed && auction.bids?.length > 0 && (
           <button onClick={() => setShowBidHistory(!showBidHistory)}>
             {showBidHistory ? "Hide bid history" : "Show bid history"}
           </button>

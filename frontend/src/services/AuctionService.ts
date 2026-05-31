@@ -54,6 +54,21 @@ export const updateAuction = async (
   return response.ok;
 };
 
+export const getClosedAuctions = async (): Promise<Auction[]> => {
+  const response = await fetch(`${baseUrl}/auction?showClosedAuctions=true`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Could not load closed auctions");
+  }
+
+  return await response.json();
+};
+
 export const searchAuctions = async (title: string): Promise<Auction[]> => {
   const response = await fetch(
     `${baseUrl}/auction/search?title=${encodeURIComponent(title)}`,
@@ -67,6 +82,26 @@ export const searchAuctions = async (title: string): Promise<Auction[]> => {
 
   if (!response.ok) {
     throw new Error("Could not search auctions");
+  }
+
+  return await response.json();
+};
+
+export const searchClosedAuctions = async (
+  title: string,
+): Promise<Auction[]> => {
+  const response = await fetch(
+    `${baseUrl}/auction/search?title=${encodeURIComponent(title)}&showClosedAuctions=true`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Could not search closed auctions");
   }
 
   return await response.json();

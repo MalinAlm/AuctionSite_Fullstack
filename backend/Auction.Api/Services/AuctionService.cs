@@ -23,8 +23,9 @@ namespace Auction.Api.Services
                 .Where(auction =>
                 auction.IsActive && 
                 (
-                    showClosedAuctions || 
-                    auction.EndsAt > DateTime.Now
+                    showClosedAuctions
+                        ? auction.EndsAt <= DateTime.Now
+                        : auction.EndsAt > DateTime.Now
                 ))
                 .ToListAsync();
 
@@ -92,8 +93,9 @@ namespace Auction.Api.Services
                     auction.IsActive &&
                     auction.Title.Contains(title) && 
                     (
-                        showClosedAuctions ||
-                        auction.EndsAt > DateTime.Now
+                        showClosedAuctions
+                            ? auction.EndsAt <= DateTime.Now
+                            : auction.EndsAt > DateTime.Now
                     ))
                 .ToListAsync();
 

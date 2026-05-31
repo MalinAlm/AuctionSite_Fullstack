@@ -6,6 +6,7 @@ import type { Auction } from "../../types/Types";
 import BidForm from "../../components/BidForm/BidForm";
 import { useAuth } from "../../contexts/AuthContext";
 import { deleteLatestBid } from "../../services/BidService";
+import { formatDateTime } from "../../utils/DateFormatter";
 
 const AuctionDetailsView = () => {
   const { id } = useParams();
@@ -70,7 +71,7 @@ const AuctionDetailsView = () => {
           <p>{auction.description}</p>
           <p>Created by: {auction.userName}</p>
           <p>Starting price: {auction.startingPrice} kr</p>
-          <p>Ends at: {auction.endsAt}</p>
+          <p>Ends at: {formatDateTime(auction.endsAt)}</p>
 
           {canEditAuction && (
             <NavLink to={`/auction/${auction.id}/edit`}>Edit auction</NavLink>
@@ -101,7 +102,7 @@ const AuctionDetailsView = () => {
                 <p>
                   {bid.amount} kr by {bid.userName}
                 </p>
-                <p>{new Date(bid.createdAt).toLocaleString("sv-SE")}</p>
+                <p>{formatDateTime(bid.createdAt)}</p>
 
                 {canDeleteLatestBid && (
                   <button onClick={handleDeleteLatestBid}>
