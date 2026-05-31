@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./AuctionCard.css";
 import { NavLink } from "react-router";
 import { formatDateTime } from "../../utils/DateFormatter";
+import { getAuctionImage } from "../../utils/AuctionImageHelper";
 
 const AuctionCard = ({ auction }: any) => {
   const [showBidHistory, setShowBidHistory] = useState(false);
@@ -12,8 +13,11 @@ const AuctionCard = ({ auction }: any) => {
   return (
     <div className="auction-card-container">
       <div>
-        <h3>Här ligger en bild på varan</h3>
-        {/* <img src="" alt="" /> */}
+        <img
+          src={getAuctionImage(auction.id)}
+          alt="default image"
+          className="auction-card-image"
+        />
       </div>
       <div>
         <NavLink to={`/auction/${auction.id}`}>
