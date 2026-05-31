@@ -12,8 +12,15 @@ const BidForm = ({ auctionId, onBidCreated }: BidFormProps) => {
   const [message, setMessage] = useState("");
 
   const handleCreateBid = async () => {
+    const bidAmount = Number(amount);
+
+    if (!Number.isInteger(bidAmount) || bidAmount < 1) {
+      setMessage("Bid amount must be a whole number greater than 0.");
+      return;
+    }
+
     const result = await createBid(auctionId, {
-      amount: Number(amount),
+      amount: bidAmount,
     });
 
     setMessage(result.message);
@@ -28,12 +35,20 @@ const BidForm = ({ auctionId, onBidCreated }: BidFormProps) => {
     <div>
       <input
         type="number"
+        min="1"
+        step="1"
         placeholder="Enter bid amount"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
       />
 
-      <button onClick={handleCreateBid}>Place bid</button>
+      <button
+        className="bid-form-button"
+        disabled={!amount}
+        onClick={handleCreateBid}
+      >
+        Place bid
+      </button>
 
       {message && <p>{message}</p>}
     </div>

@@ -71,6 +71,8 @@ const AuctionDetailsView = () => {
           <p>{auction.description}</p>
           <p>Created by: {auction.userName}</p>
           <p>Starting price: {auction.startingPrice} kr</p>
+
+          <p>Starts at: {formatDateTime(auction.startsAt)}</p>
           <p>Ends at: {formatDateTime(auction.endsAt)}</p>
 
           {canEditAuction && (
