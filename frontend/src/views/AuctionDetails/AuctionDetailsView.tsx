@@ -79,17 +79,11 @@ const AuctionDetailsView = () => {
 
           {shouldShowClosedMessage && <p>This auction is closed.</p>}
 
-          {shouldShowSignInMessage && <p>Sign in to place a bid.</p>}
+          <h3>{isAuctionOpen ? "Bids" : "Winning bid"}</h3>
 
-          {shouldShowOwnerMessage && <p>You cannot bid on your own auction.</p>}
-
-          {shouldShowBidForm && (
-            <BidForm auctionId={auction.id} onBidCreated={fetchAuction} />
+          {!hasBids && (
+            <p>{isAuctionOpen ? "No bids yet" : "No winning bid"}</p>
           )}
-
-          <h3>Bids</h3>
-
-          {!hasBids && <p>No bids yet.</p>}
 
           {auction.bids.map((bid) => {
             const canDeleteLatestBid =
@@ -113,6 +107,13 @@ const AuctionDetailsView = () => {
             );
           })}
         </>
+      )}
+      {shouldShowSignInMessage && <p>Sign in to place a bid.</p>}
+
+      {shouldShowOwnerMessage && <p>You cannot bid on your own auction.</p>}
+
+      {shouldShowBidForm && (
+        <BidForm auctionId={auction.id} onBidCreated={fetchAuction} />
       )}
     </div>
   );
