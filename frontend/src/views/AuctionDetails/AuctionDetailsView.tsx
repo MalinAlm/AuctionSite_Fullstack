@@ -68,6 +68,7 @@ const AuctionDetailsView = () => {
         <>
           <h2>{auction.title}</h2>
           <p>{auction.description}</p>
+          <p>Created by: {auction.userName}</p>
           <p>Starting price: {auction.startingPrice} kr</p>
           <p>Ends at: {auction.endsAt}</p>
 
@@ -100,6 +101,7 @@ const AuctionDetailsView = () => {
                 <p>
                   {bid.amount} kr by {bid.userName}
                 </p>
+                <p>{new Date(bid.createdAt).toLocaleString("sv-SE")}</p>
 
                 {canDeleteLatestBid && (
                   <button onClick={handleDeleteLatestBid}>

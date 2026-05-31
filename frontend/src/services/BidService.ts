@@ -15,9 +15,11 @@ export const createBid = async (
   });
 
   if (!response.ok) {
+    const errorMessage = await response.text();
+
     return {
       success: false,
-      message: "Could not create bid",
+      message: errorMessage + " kr",
       bid: null,
     };
   }
