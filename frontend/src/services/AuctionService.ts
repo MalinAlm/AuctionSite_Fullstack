@@ -1,19 +1,6 @@
 import { getToken, baseUrl } from "../utils/TokenHandler";
 import type { CreateAuctionRequest, Auction } from "../types/Types";
 
-export const createAuction = async (request: CreateAuctionRequest) => {
-  const response = await fetch(`${baseUrl}/auction`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + getToken(),
-    },
-    body: JSON.stringify(request),
-  });
-
-  return response.ok;
-};
-
 export const getAuctions = async (): Promise<Auction[]> => {
   const response = await fetch(`${baseUrl}/auction`, {
     method: "GET",
@@ -36,4 +23,33 @@ export const getAuctionById = async (auctionId: string): Promise<Auction> => {
   });
 
   return await response.json();
+};
+
+export const createAuction = async (request: CreateAuctionRequest) => {
+  const response = await fetch(`${baseUrl}/auction`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + getToken(),
+    },
+    body: JSON.stringify(request),
+  });
+
+  return response.ok;
+};
+
+export const updateAuction = async (
+  auctionId: string,
+  request: CreateAuctionRequest,
+): Promise<boolean> => {
+  const response = await fetch(`${baseUrl}/auction/${auctionId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + getToken(),
+    },
+    body: JSON.stringify(request),
+  });
+
+  return response.ok;
 };

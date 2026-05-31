@@ -4,6 +4,7 @@ import LoginView from "../auth/LoginView/LoginView";
 import ProtectedRoute from "../../components/ProtectedRoute/ProtectedRoute";
 import AuctionDetailsView from "../AuctionDetails/AuctionDetailsView";
 import CreateAuctionView from "../CreateAuction/CreateAuctionView";
+import UpdateAuctionView from "../UpdateAuction/UpdateAuctionView";
 
 const Main = () => {
   return (
@@ -18,6 +19,15 @@ const Main = () => {
           element={
             <ProtectedRoute>
               <CreateAuctionView />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/auction/:id/edit"
+          element={
+            <ProtectedRoute>
+              <UpdateAuctionView />
             </ProtectedRoute>
           }
         />

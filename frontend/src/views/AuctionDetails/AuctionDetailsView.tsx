@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useParams, NavLink } from "react-router";
 import "./AuctionDetailsView.css";
 import { useEffect, useState } from "react";
 import { getAuctionById } from "../../services/AuctionService";
@@ -27,6 +27,8 @@ const AuctionDetailsView = () => {
 
   const shouldShowBidForm =
     auction && isAuctionOpen && isLoggedIn && !isAuctionOwner;
+
+  const canEditAuction = isAuctionOpen && isLoggedIn && isAuctionOwner;
 
   const fetchAuction = async () => {
     if (!id) return;
@@ -68,6 +70,10 @@ const AuctionDetailsView = () => {
           <p>{auction.description}</p>
           <p>Starting price: {auction.startingPrice} kr</p>
           <p>Ends at: {auction.endsAt}</p>
+
+          {canEditAuction && (
+            <NavLink to={`/auction/${auction.id}/edit`}>Edit auction</NavLink>
+          )}
 
           {shouldShowClosedMessage && <p>This auction is closed.</p>}
 
