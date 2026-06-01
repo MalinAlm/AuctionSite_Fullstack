@@ -1,0 +1,40 @@
+@media (min-width: 768px) {
+  .create-auction-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 20vh;
+    width: 30vw;
+    background-color: rgb(255, 255, 255);
+    padding: 4em;
+    gap: 1em;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgb(193, 193, 193);
+    max-width: 800px;
+    margin: 6rem auto;
+  }
+
+  .create-auction-container input,
+  .create-auction-container button {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .create-auction-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 20vh;
+    max-width: 90vw;
+    background-color: rgb(255, 255, 255);
+    padding: 1em;
+    gap: 1em;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgb(193, 193, 193);
+    margin: 2em;
+  }
+
+  .create-auction-container input,
+  .create-auction-container button {
+    padding: 0.75rem;
+  }
+}

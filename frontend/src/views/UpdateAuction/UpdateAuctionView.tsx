@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router";
-import "../CreateAuction/CreateAuctionView.css";
+import "./UpdateAuctionView.css";
 import { useEffect, useState } from "react";
 import { getAuctionById, updateAuction } from "../../services/AuctionService";
 import toast from "react-hot-toast";

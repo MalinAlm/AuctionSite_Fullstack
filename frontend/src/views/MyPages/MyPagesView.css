@@ -1,5 +1,6 @@
 .my-pages-container {
-  margin: 2rem;
+  max-width: 400px;
+  margin: 6rem auto;
 }
 
 .change-password-section {
