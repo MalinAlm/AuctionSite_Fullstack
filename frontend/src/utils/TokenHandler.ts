@@ -1,11 +1,11 @@
 export const baseUrl = import.meta.env.VITE_API_URL;
 
 export const setToken = (token: string) => {
-  localStorage.setItem("accessToken", token);
+  localStorage.setItem("token", token);
 };
 
 export const getToken = () => {
-  const token: string = String(localStorage.getItem("accessToken"));
+  const token: string = String(localStorage.getItem("token"));
 
   return token;
 };

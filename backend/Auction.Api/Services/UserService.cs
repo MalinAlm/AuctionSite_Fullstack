@@ -30,6 +30,7 @@ namespace Auction.Api.Services
             List<Claim> claims  = new List<Claim>();
 
             claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
+            claims.Add(new Claim(ClaimTypes.Name, user.UserName));
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
             claims.Add(new Claim(ClaimTypes.Role, user.Role));
 
