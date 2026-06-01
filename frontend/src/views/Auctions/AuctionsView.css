@@ -1,3 +1,50 @@
 .auctions-view-container {
   margin: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auction-search-container {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.auction-search-input {
+  width: 100%;
+  max-width: 26rem;
+  padding: 0.75rem;
+}
+
+.auction-search-button {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+}
+
+.auction-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.auction-filter-container {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.auction-filter-container button,
+.auction-search-button {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+}
+
+.active-filter-button {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.auction-list {
+  display: grid;
+  gap: 1rem;
 }

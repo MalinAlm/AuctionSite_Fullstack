@@ -1,16 +1,28 @@
-import { login } from "../../services/AuthService";
+import { login as loginUser } from "../../services/AuthService";
 import { useState } from "react";
 import "./LoginForm.css";
+import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState<string>("");
 
-  const handleLogin = async () => {
-    const success = await login({ email, password });
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-    setMessage(success ? "Du är inloggad" : "Felaktig inloggning");
+  const handleLogin = async () => {
+    const token = await loginUser({ email, password });
+
+    if (token) {
+      login(token);
+      toast.success("Logged in sussessfully");
+      navigate("/");
+    } else {
+      setMessage("Invalid login");
+    }
   };
 
   return (

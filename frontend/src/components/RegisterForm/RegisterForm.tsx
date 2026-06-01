@@ -1,12 +1,12 @@
 import { useState } from "react";
 import "../LoginForm/LoginForm.css";
 import { register } from "../../services/AuthService";
+import toast from "react-hot-toast";
 
 const RegisterForm = () => {
   const [userName, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState<string>("");
 
   const handleRegister = async () => {
     const success = await register({
@@ -15,7 +15,12 @@ const RegisterForm = () => {
       password,
     });
 
-    setMessage(success ? "Account created" : "Registration failed");
+    if (success) {
+      toast.success("Account created");
+      return;
+    }
+
+    toast.error("Registration failed");
   };
 
   return (
@@ -45,8 +50,6 @@ const RegisterForm = () => {
       <button className="form-input-button" onClick={handleRegister}>
         Register
       </button>
-
-      <p>{message}</p>
     </div>
   );
 };
