@@ -6,7 +6,6 @@ export const getAuctions = async (): Promise<Auction[]> => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + getToken(),
     },
   });
 
@@ -18,7 +17,6 @@ export const getAuctionById = async (auctionId: string): Promise<Auction> => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + getToken(),
     },
   });
 

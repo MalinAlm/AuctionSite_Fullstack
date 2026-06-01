@@ -11,7 +11,7 @@ const Header = () => {
       <nav className="header-nav">
         <ul className="header-list">
           <li>
-            <NavLink to="/">Home</NavLink>
+            <NavLink to="/">Auctions</NavLink>
           </li>
           <li>
             {isLoggedIn && (
