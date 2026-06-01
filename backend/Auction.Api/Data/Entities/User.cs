@@ -1,6 +1,6 @@
 ﻿using Auction.Api.Constants;
 
-namespace Auction.Api.Entities
+namespace Auction.Api.Data.Entities
 {
     public class User
     {

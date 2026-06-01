@@ -1,4 +1,4 @@
-﻿using Auction.Api.Interfaces;
+﻿using Auction.Api.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

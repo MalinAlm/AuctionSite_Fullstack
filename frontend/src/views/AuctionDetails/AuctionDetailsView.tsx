@@ -7,6 +7,7 @@ import BidForm from "../../components/BidForm/BidForm";
 import { useAuth } from "../../contexts/AuthContext";
 import { deleteLatestBid } from "../../services/BidService";
 import { formatDateTime } from "../../utils/DateFormatter";
+import { getAuctionImage } from "../../utils/AuctionImageHelper";
 
 const AuctionDetailsView = () => {
   const { id } = useParams();
@@ -23,8 +24,8 @@ const AuctionDetailsView = () => {
 
   const shouldShowClosedMessage = auction && !isAuctionOpen;
   const shouldShowSignInMessage = auction && isAuctionOpen && !isLoggedIn;
-  const shouldShowOwnerMessage =
-    auction && isAuctionOpen && isLoggedIn && isAuctionOwner;
+  // const shouldShowOwnerMessage =
+  //   auction && isAuctionOpen && isLoggedIn && isAuctionOwner;
 
   const shouldShowBidForm =
     auction && isAuctionOpen && isLoggedIn && !isAuctionOwner;
@@ -66,68 +67,80 @@ const AuctionDetailsView = () => {
       {!auction && <p>Loading auction...</p>}
 
       {auction && (
-        <>
-          <h2 className="auction-details-heading">{auction.title}</h2>
-          <div className="auction-desctiption">
-            <h4>Beskrivning</h4>
-            <p>{auction.description}</p>
-          </div>
+        <div className="auction-details-flex">
           <div>
-            <p>
-              Created by: <b>{auction.userName} </b>
-            </p>
-            <p>
-              Starting price: <b>{auction.startingPrice} kr</b>{" "}
-            </p>
+            <div>
+              <img
+                src={getAuctionImage(auction.id)}
+                alt={auction.title}
+                className="auction-details-image"
+              />
+              <h2 className="auction-details-heading">{auction.title}</h2>
+              <div className="auction-desctiption">
+                <h4>Beskrivning</h4>
+                <p>{auction.description}</p>
+              </div>
+            </div>
+            <div>
+              <p>
+                Created by: <b>{auction.userName} </b>
+              </p>
+              <p>
+                Starting price: <b>{auction.startingPrice} kr</b>{" "}
+              </p>
 
-            <p>Starts at: {formatDateTime(auction.startsAt)}</p>
-            <p>Ends at: {formatDateTime(auction.endsAt)}</p>
+              <p>Starts at: {formatDateTime(auction.startsAt)}</p>
+              <p>Ends at: {formatDateTime(auction.endsAt)}</p>
+            </div>
+
+            {canEditAuction && (
+              <NavLink to={`/auction/${auction.id}/edit`}>
+                <b>Edit auction</b>
+              </NavLink>
+            )}
+
+            {shouldShowClosedMessage && <p>This auction is closed.</p>}
+          </div>
+          <div className="bid-container">
+            <h2>{isAuctionOpen ? "Bids" : "Winning bid"}</h2>
+            {shouldShowBidForm && (
+              <BidForm auctionId={auction.id} onBidCreated={fetchAuction} />
+            )}
+
+            {!hasBids && (
+              <p>{isAuctionOpen ? "No bids yet" : "No winning bid"}</p>
+            )}
+
+            {auction.bids.map((bid) => {
+              const canDeleteLatestBid =
+                isAuctionOpen &&
+                latestBid?.id === bid.id &&
+                bid.userId === userId;
+
+              return (
+                <div key={bid.id}>
+                  <p>
+                    <b>{bid.amount} kr </b> by {bid.userName}
+                  </p>
+                  <p>{formatDateTime(bid.createdAt)}</p>
+
+                  {canDeleteLatestBid && (
+                    <button
+                      className="delete-bid-button"
+                      onClick={handleDeleteLatestBid}
+                    >
+                      Delete latest bid
+                    </button>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
-          {canEditAuction && (
-            <NavLink to={`/auction/${auction.id}/edit`}>Edit auction</NavLink>
-          )}
+          {shouldShowSignInMessage && <p>Sign in to place a bid.</p>}
 
-          {shouldShowClosedMessage && <p>This auction is closed.</p>}
-
-          <h2>{isAuctionOpen ? "Bids" : "Winning bid"}</h2>
-
-          {!hasBids && (
-            <p>{isAuctionOpen ? "No bids yet" : "No winning bid"}</p>
-          )}
-
-          {auction.bids.map((bid) => {
-            const canDeleteLatestBid =
-              isAuctionOpen &&
-              latestBid?.id === bid.id &&
-              bid.userId === userId;
-
-            return (
-              <div key={bid.id}>
-                <p>
-                  <b>{bid.amount} kr </b> by {bid.userName}
-                </p>
-                <p>{formatDateTime(bid.createdAt)}</p>
-
-                {canDeleteLatestBid && (
-                  <button
-                    className="delete-bid-button"
-                    onClick={handleDeleteLatestBid}
-                  >
-                    Delete latest bid
-                  </button>
-                )}
-              </div>
-            );
-          })}
-        </>
-      )}
-      {shouldShowSignInMessage && <p>Sign in to place a bid.</p>}
-
-      {shouldShowOwnerMessage && <p>You cannot bid on your own auction.</p>}
-
-      {shouldShowBidForm && (
-        <BidForm auctionId={auction.id} onBidCreated={fetchAuction} />
+          {/* {shouldShowOwnerMessage && <p>You cannot bid on your own auction.</p>} */}
+        </div>
       )}
     </div>
   );

@@ -1,9 +1,9 @@
 ﻿using Auction.Api.DTOs;
-using Auction.Api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Auction.Api.Core.Interfaces;
 
 namespace Auction.Api.Controllers
 {

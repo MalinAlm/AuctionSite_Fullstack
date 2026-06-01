@@ -1,43 +1,40 @@
-﻿using Auction.Api.Data;
+﻿using Auction.Api.Core.Interfaces;
 using Auction.Api.DTOs;
-using Auction.Api.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using Auction.Api.Data.Interfaces;
 
-namespace Auction.Api.Services
+namespace Auction.Api.Core.Services
 {
     public class AdminService : IAdminService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IAdminRepo _adminRepo;
 
-        public AdminService(ApplicationDbContext context)
+        public AdminService(IAdminRepo adminRepo)
         {
-            _context = context;
+            _adminRepo = adminRepo;
         }
 
         public async Task<List<AdminUserResponse>> GetUsersAsync(bool showInactive)
         {
-            var users = await _context.Users
-                .Where(user => showInactive || user.IsActive)
+            var users = await _adminRepo.GetUsersAsync(showInactive);
+
+            return users
                 .Select(user => new AdminUserResponse
                 {
                     Id = user.Id,
                     UserName = user.UserName,
                     Email = user.Email,
                     Role = user.Role,
-                    IsActive = user.IsActive,
+                    IsActive = user.IsActive
                 })
-                .ToListAsync();
-
-            return users;
+                .ToList();
         }
 
 
         public async Task<List<AdminAuctionResponse>> GetAuctionsAsync(bool showInactive)
         {
-            var auctions = await _context.Auctions
-                .Include(auction => auction.User)
-                .Include(auction => auction.Bids)
-                .Where(auction => showInactive || auction.IsActive)
+            var auctions = await _adminRepo.GetAuctionsAsync(showInactive);
+
+            return auctions
                 .Select(auction => new AdminAuctionResponse
                 {
                     Id = auction.Id,
@@ -55,17 +52,13 @@ namespace Auction.Api.Services
                         ? auction.Bids.Max(bid => bid.Amount)
                         : null
                 })
-                .ToListAsync();
-
-            return auctions;
+                .ToList();
         }
-
 
 
         public async Task<bool> SetAuctionActiveStatusAsync(string auctionId, bool isActive)
         {
-            var auction = await _context.Auctions
-                .FirstOrDefaultAsync(auction => auction.Id == auctionId);
+            var auction = await _adminRepo.GetAuctionByIdAsync(auctionId);
 
             if (auction == null)
             {
@@ -74,16 +67,15 @@ namespace Auction.Api.Services
 
             auction.IsActive = isActive;
 
-            await _context.SaveChangesAsync();
+            await _adminRepo.SaveChangesAsync();
 
             return true;
         }
 
-        
+
         public async Task<bool> SetUserActiveStatusAsync(string userId, bool isActive)
         {
-            var user = await _context.Users
-                .FirstOrDefaultAsync (user => user.Id == userId);
+            var user = await _adminRepo.GetUserByIdAsync(userId);
 
             if (user == null)
             {
@@ -92,7 +84,7 @@ namespace Auction.Api.Services
 
             user.IsActive = isActive;
 
-            await _context.SaveChangesAsync();
+            await _adminRepo.SaveChangesAsync();
 
             return true;
         }
