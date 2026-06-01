@@ -1,4 +1,4 @@
-﻿using Auction.Api.Entities;
+﻿using Auction.Api.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Auction.Api.Data

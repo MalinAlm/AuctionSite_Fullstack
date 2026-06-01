@@ -1,6 +1,5 @@
-﻿using Auction.Api.DTOs;
-using Auction.Api.Interfaces;
-using Auction.Api.Services;
+﻿using Auction.Api.Core.Interfaces;
+using Auction.Api.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

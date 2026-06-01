@@ -1,27 +1,26 @@
-﻿using Auction.Api.Data;
-using Auction.Api.Entities;
-using Auction.Api.Interfaces;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Auction.Api.DTOs;
 using Auction.Api.Constants;
+using Auction.Api.Core.Interfaces;
+using Auction.Api.Data.Entities;
+using Auction.Api.Data.Interfaces;
 
-namespace Auction.Api.Services
+namespace Auction.Api.Core.Services
 {
     public class UserService : IUserService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUserRepo _userRepo;
         private readonly IConfiguration _configuration;
         private readonly IPasswordHasher<User> _passwordHasher;
 
-        public UserService(IConfiguration configuration, ApplicationDbContext context, IPasswordHasher<User> passwordHasher)
+        public UserService(IUserRepo userRepo, IConfiguration configuration, IPasswordHasher<User> passwordHasher)
         {
+            _userRepo = userRepo;
             _configuration = configuration;
-            _context = context;
             _passwordHasher = passwordHasher;
         }
 
@@ -55,8 +54,7 @@ namespace Auction.Api.Services
 
         public async Task<User?> LoginAsync(DTOs.LoginRequest request)
         {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == request.Email);
+            var user = await _userRepo.GetUserByEmailAsync(request.Email);
 
             if (user == null)
             {
@@ -83,8 +81,7 @@ namespace Auction.Api.Services
 
         public async Task<User?> RegisterAsync(RegisterRequest request)
         {
-            var emailExists = await _context.Users
-                .AnyAsync(u => u.Email == request.Email);
+            var emailExists = await _userRepo.EmailExistsAsync(request.Email);
 
             if (emailExists)
             {
@@ -102,8 +99,7 @@ namespace Auction.Api.Services
 
             user.PasswordHash = _passwordHasher.HashPassword(user, request.Password);
 
-            _context.Users.Add(user);  
-            await _context.SaveChangesAsync();
+            await _userRepo.AddUserAsync(user);
 
             return user;
         }
@@ -111,8 +107,7 @@ namespace Auction.Api.Services
 
         public async Task<bool> ChangePasswordAsync(string userId, ChangePasswordRequest request)
         {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(user => user.Id == userId);
+            var user = await _userRepo.GetUserByIdAsync(userId);
 
             if (user == null)
             {
@@ -133,7 +128,7 @@ namespace Auction.Api.Services
                 user,
                 request.NewPassword);
 
-            await _context.SaveChangesAsync();
+            await _userRepo.SaveChangesAsync();
 
             return true;
         }

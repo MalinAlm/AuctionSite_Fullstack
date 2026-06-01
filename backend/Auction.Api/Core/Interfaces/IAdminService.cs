@@ -1,6 +1,6 @@
 ﻿using Auction.Api.DTOs;
 
-namespace Auction.Api.Interfaces
+namespace Auction.Api.Core.Interfaces
 {
     public interface IAdminService
     {
