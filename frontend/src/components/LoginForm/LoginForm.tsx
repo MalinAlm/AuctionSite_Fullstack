@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./LoginForm.css";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -17,6 +18,7 @@ const LoginForm = () => {
 
     if (token) {
       login(token);
+      toast.success("Logged in sussessfully");
       navigate("/");
     } else {
       setMessage("Invalid login");

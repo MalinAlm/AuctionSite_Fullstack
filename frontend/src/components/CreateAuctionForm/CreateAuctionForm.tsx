@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./CreateAuctionForm.css";
 import { useNavigate } from "react-router";
 import { createAuction } from "../../services/AuctionService";
+import toast from "react-hot-toast";
 
 const CreateAuctionForm = () => {
   const [title, setTitle] = useState("");
@@ -9,7 +10,6 @@ const CreateAuctionForm = () => {
   const [startingPrice, setStartingPrice] = useState("");
   const [startsAt, setStartsAt] = useState("");
   const [endsAt, setEndsAt] = useState("");
-  const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -20,17 +20,17 @@ const CreateAuctionForm = () => {
     const selectedStartingPrice = Number(startingPrice);
 
     if (selectedStartingPrice < 1) {
-      setMessage("Starting price must be at least 1 kr.");
+      toast.error("Starting price must be at least 1 kr.");
       return;
     }
 
     if (selectedStartDate < now) {
-      setMessage("Start date cannot be in the past.");
+      toast.error("Start date cannot be in the past.");
       return;
     }
 
     if (selectedEndDate <= selectedStartDate) {
-      setMessage("End date must be after start date.");
+      toast.error("End date must be after start date.");
       return;
     }
 
@@ -43,11 +43,13 @@ const CreateAuctionForm = () => {
     });
 
     if (success) {
+      toast.success("Auction created");
+
       navigate("/");
       return;
     }
 
-    setMessage("Could not create auction.");
+    toast.error("Could not create auction.");
   };
   return (
     <div className="create-auction-container">
@@ -88,8 +90,6 @@ const CreateAuctionForm = () => {
       />
 
       <button onClick={handleCreateAuction}>Create auction</button>
-
-      {message && <p>{message}</p>}
     </div>
   );
 };

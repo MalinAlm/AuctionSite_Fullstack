@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router";
 import "../CreateAuction/CreateAuctionView.css";
 import { useEffect, useState } from "react";
 import { getAuctionById, updateAuction } from "../../services/AuctionService";
+import toast from "react-hot-toast";
 
 const UpdateAuctionView = () => {
   const { id } = useParams();
@@ -13,7 +14,6 @@ const UpdateAuctionView = () => {
   const [startsAt, setStartsAt] = useState("");
   const [endsAt, setEndsAt] = useState("");
   const [hasBids, setHasBids] = useState(false);
-  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const fetchAuction = async () => {
@@ -29,7 +29,7 @@ const UpdateAuctionView = () => {
         setEndsAt(auction.endsAt.slice(0, 16));
         setHasBids(auction.bids.length > 0);
       } catch {
-        setMessage("Could not load auction.");
+        toast.error("Could not load auction.");
       }
     };
 
@@ -44,11 +44,11 @@ const UpdateAuctionView = () => {
     const selectedEndDate = new Date(endsAt);
 
     if (selectedStartingPrice < 1) {
-      setMessage("Startingprice must be at least 1 kr");
+      toast.error("Startingprice must be at least 1 kr");
     }
 
     if (selectedEndDate <= selectedStartDate) {
-      setMessage("End date must be after start date");
+      toast.error("End date must be after start date");
     }
 
     const success = await updateAuction(id, {
@@ -60,18 +60,18 @@ const UpdateAuctionView = () => {
     });
 
     if (success) {
+      toast.success("Auction updated");
+
       navigate(`/auction/${id}`);
       return;
     }
 
-    setMessage("Could not update auction");
+    toast.error("Could not update auction");
   };
 
   return (
     <div className="create-auction-container">
       <h1>Update Auction</h1>
-
-      {message && <p>{message}</p>}
 
       <input
         type="text"

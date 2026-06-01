@@ -1,6 +1,7 @@
 import "./BidForm.css";
 import { useState } from "react";
 import { createBid } from "../../services/BidService";
+import toast from "react-hot-toast";
 
 type BidFormProps = {
   auctionId: string;
@@ -15,7 +16,7 @@ const BidForm = ({ auctionId, onBidCreated }: BidFormProps) => {
     const bidAmount = Number(amount);
 
     if (!Number.isInteger(bidAmount) || bidAmount < 1) {
-      setMessage("Bid amount must be a whole number greater than 0.");
+      toast.error("Bid amount must be a whole number greater than 0.");
       return;
     }
 
@@ -26,6 +27,8 @@ const BidForm = ({ auctionId, onBidCreated }: BidFormProps) => {
     setMessage(result.message);
 
     if (result.success) {
+      toast.success("Bid placed");
+
       setAmount("");
       onBidCreated();
     }
