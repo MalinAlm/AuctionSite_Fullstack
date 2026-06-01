@@ -1,26 +1,23 @@
-﻿using Auction.Api.Data;
+﻿using Auction.Api.Core.Interfaces;
+using Auction.Api.Data.Interfaces;
 using Auction.Api.DTOs;
-using Auction.Api.Entities;
-using Auction.Api.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Auction.Api.Data.Entities;
 
-namespace Auction.Api.Services
+namespace Auction.Api.Core.Services
 {
     public class BidService : IBidService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IBidRepo _bidRepo;
 
-        public BidService(ApplicationDbContext context)
+        public BidService(IBidRepo bidRepo)
         {
-            _context = context;
+            _bidRepo = bidRepo;
         }
+
 
         public async Task<BidActionResponse> CreateBidAsync(string auctionId, string userId, CreateBidRequest request)
         {
-            var auction = await _context.Auctions
-                .Include(auction => auction.Bids)
-                .FirstOrDefaultAsync(auction => auction.Id == auctionId);
+            var auction = await _bidRepo.GetAuctionWithBidsAsync(auctionId);
 
 
             if (auction == null)
@@ -76,8 +73,7 @@ namespace Auction.Api.Services
 
             try
             {
-                _context.Bids.Add(bid);
-                await _context.SaveChangesAsync();
+                await _bidRepo.AddBidAsync(bid);
 
             }
             catch (Exception)
@@ -89,8 +85,7 @@ namespace Auction.Api.Services
                 };
             }
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(user => user.Id == userId);
+            var user = await _bidRepo.GetUserByIdAsync(userId);
 
             return new BidActionResponse
             {
@@ -114,9 +109,7 @@ namespace Auction.Api.Services
             string auctionId,
             string userId)
         {
-            var auction = await _context.Auctions
-                .Include(auction => auction.Bids)
-                .FirstOrDefaultAsync(auction => auction.Id == auctionId);
+            var auction = await _bidRepo.GetAuctionForBidDeletionAsync(auctionId);
 
             if (auction == null)
             {
@@ -159,8 +152,7 @@ namespace Auction.Api.Services
                 };
             }
 
-            _context.Bids.Remove(latestBid);
-            await _context.SaveChangesAsync();
+            await _bidRepo.DeleteBidAsync(latestBid);
 
             return new BidActionResponse
             {

@@ -1,7 +1,7 @@
-﻿using Auction.Api.DTOs;
-using Auction.Api.Entities;
+﻿using Auction.Api.Data.Entities;
+using Auction.Api.DTOs;
 
-namespace Auction.Api.Interfaces
+namespace Auction.Api.Core.Interfaces
 {
     public interface IUserService
     {

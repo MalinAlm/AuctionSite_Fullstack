@@ -1,7 +1,9 @@
+using Auction.Api.Core.Interfaces;
+using Auction.Api.Core.Services;
 using Auction.Api.Data;
-using Auction.Api.Entities;
-using Auction.Api.Interfaces;
-using Auction.Api.Services;
+using Auction.Api.Data.Entities;
+using Auction.Api.Data.Interfaces;
+using Auction.Api.Data.Repos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -26,11 +28,19 @@ namespace Auction.Api
             builder.Services.AddControllers();
             builder.Services.AddCors();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IUserRepo, UserRepo>();
+
             builder.Services.AddScoped<IAuctionService, AuctionService>();
+            builder.Services.AddScoped<IAuctionRepo, AuctionRepo>();
+
             builder.Services.AddScoped<IBidService, BidService>();
+            builder.Services.AddScoped<IBidRepo, BidRepo>();
+
             builder.Services.AddScoped<IAdminService, AdminService>();
+            builder.Services.AddScoped<IAdminRepo, AdminRepo>();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));

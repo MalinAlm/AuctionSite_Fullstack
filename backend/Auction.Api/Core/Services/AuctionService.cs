@@ -1,49 +1,31 @@
-﻿using Auction.Api.Data;
+﻿using Auction.Api.Core.Interfaces;
+using Auction.Api.Data.Interfaces;
 using Auction.Api.DTOs;
-using Auction.Api.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
-namespace Auction.Api.Services
+namespace Auction.Api.Core.Services
 {
     public class AuctionService : IAuctionService
     {
-        private readonly ApplicationDbContext  _context;
+        private readonly IAuctionRepo _auctionRepo;
 
-        public AuctionService(ApplicationDbContext context)
+        public AuctionService(IAuctionRepo auctionRepo)
         {
-            _context = context;
+            _auctionRepo = auctionRepo;
         }
 
         public async Task<List<AuctionResponse>> GetAuctionsAsync(bool showClosedAuctions)
         {
-            var auctions = await _context.Auctions
-                .Include(auction => auction.User)
-                .Include(auction=> auction.Bids)
-                .ThenInclude(bid => bid.User)
-                .Where(auction =>
-                auction.IsActive && 
-                (
-                    showClosedAuctions
-                        ? auction.EndsAt <= DateTime.Now
-                        : auction.EndsAt > DateTime.Now
-                ))
-                .ToListAsync();
+            var auctions = await _auctionRepo.GetAuctionsAsync(showClosedAuctions);
 
             return auctions
                 .Select(MapToAuctionResponse)
                 .ToList();
         }
 
-        
+
         public async Task<AuctionResponse?> GetAuctionByIdAsync(string auctionId)
         {
-            var auction = await _context.Auctions
-                .Include(auction => auction.User)
-                .Include(auction => auction.Bids)
-                .ThenInclude(bid => bid.User)
-                .FirstOrDefaultAsync(auction =>
-                 auction.Id == auctionId && 
-                 auction.IsActive);
+            var auction = await _auctionRepo.GetAuctionByIdAsync(auctionId);
 
             if (auction == null)
             {
@@ -66,7 +48,7 @@ namespace Auction.Api.Services
                 return null;
             }
 
-            var auction = new Entities.Auction
+            var auction = new Data.Entities.Auction
             {
                 Title = request.Title,
                 Description = request.Description,
@@ -76,8 +58,7 @@ namespace Auction.Api.Services
                 UserId = userId
             };
 
-            _context.Auctions.Add(auction);
-            await _context.SaveChangesAsync();
+            await _auctionRepo.AddAuctionAsync(auction);
 
             return MapToAuctionResponse(auction);
         }
@@ -85,19 +66,7 @@ namespace Auction.Api.Services
 
         public async Task<List<AuctionResponse>> SearchAuctionsAsync(string title, bool showClosedAuctions)
         {
-            var auctions = await _context.Auctions
-                .Include(auction => auction.User)
-                .Include(auction => auction.Bids)
-                .ThenInclude(bid => bid.User)
-                .Where(auction => 
-                    auction.IsActive &&
-                    auction.Title.Contains(title) && 
-                    (
-                        showClosedAuctions
-                            ? auction.EndsAt <= DateTime.Now
-                            : auction.EndsAt > DateTime.Now
-                    ))
-                .ToListAsync();
+            var auctions = await _auctionRepo.SearchAuctionsAsync(title, showClosedAuctions);
 
             return auctions
                 .Select(MapToAuctionResponse)
@@ -105,7 +74,7 @@ namespace Auction.Api.Services
         }
 
 
-        private static AuctionResponse MapToAuctionResponse(Entities.Auction auction)
+        private static AuctionResponse MapToAuctionResponse(Data.Entities.Auction auction)
         {
             return new AuctionResponse
             {
@@ -152,10 +121,7 @@ namespace Auction.Api.Services
             string userId,
             UpdateAuctionRequest request)
         {
-            var auction = await _context.Auctions
-                .Include(auction => auction.Bids)
-                .Include(auction => auction.User)
-                .FirstOrDefaultAsync(auction => auction.Id == auctionId);
+            var auction = await _auctionRepo.GetAuctionForUpdateAsync(auctionId);
 
             if (auction == null) return null;
 
@@ -179,7 +145,7 @@ namespace Auction.Api.Services
                 auction.StartingPrice = request.StartingPrice;
             }
 
-            await _context.SaveChangesAsync();
+            await _auctionRepo.SaveChangesAsync();
 
             return MapToAuctionResponse(auction);
                 
