@@ -9,8 +9,16 @@ li {
   list-style: none;
 }
 
-nav a {
+a {
   text-decoration: none;
+  color: black;
+  font-weight: 400;
+}
+
+a:hover {
+  text-decoration: none;
+  color: rgb(77, 219, 255);
+  font-weight: 400;
 }
 
 button {
