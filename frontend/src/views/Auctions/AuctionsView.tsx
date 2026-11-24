@@ -101,9 +101,11 @@ const AuctionsView = () => {
       </div>
 
       {message && <p>{message}</p>}
-      {auctions.map((auction) => (
-        <AuctionCard key={auction.id} auction={auction} />
-      ))}
+      <div className="auction-list">
+        {auctions.map((auction) => (
+          <AuctionCard key={auction.id} auction={auction} />
+        ))}
+      </div>
     </div>
   );
 };
