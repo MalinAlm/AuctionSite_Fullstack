@@ -4,13 +4,13 @@
 
 ![Auction overview](screenshots/auctions.png)
 
-### Delete latest bid web
+### Delete latest bid 
 
-![Auction overview](screenshots/deletebid.png)
+![Delete bid](screenshots/deletebid.png)
 
 ### Mobile view
 
-![Auction overview](screenshots/mobile.png)
+![Mobile view](screenshots/mobile.png)
 
 A full-stack auction application built with React, TypeScript, ASP.NET Core Web API and SQL Server. Users can browse auctions, create their own auctions and place bids. Administrators can manage the active status of users and auctions.
 
