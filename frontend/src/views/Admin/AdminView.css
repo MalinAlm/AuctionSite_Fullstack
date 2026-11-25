@@ -1,66 +1,52 @@
-@media (min-width: 767px) {
-  .admin-view-container {
-    margin: 2rem;
-  }
-
-  .admin-flex-container {
-    display: flex;
-    justify-content: space-evenly;
-  }
-
-  .admin-section {
-    margin-bottom: 2rem;
-  }
-
-  .admin-list {
-    display: grid;
-    gap: 1rem;
-  }
-
-  .admin-card {
-    background-color: white;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgb(193, 193, 193);
-    min-width: 30vw;
-  }
-
-  .admin-card button {
-    padding: 0.75rem 1rem;
-    cursor: pointer;
-  }
+.admin-view-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
 
-@media (max-width: 768px) {
-  .admin-view-container {
-    margin: 2rem;
-  }
+.admin-flex-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
 
+.admin-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  overflow-wrap: anywhere;
+}
+
+.admin-card h3 {
+  margin: 0 0 1rem;
+}
+
+.admin-card p {
+  margin: 0.5rem 0;
+}
+
+.admin-card button {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary);
+  color: var(--surface);
+}
+
+.admin-card button:hover {
+  background: var(--accent);
+  color: var(--primary);
+}
+
+@media (min-width: 768px) {
   .admin-flex-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-  }
-
-  .admin-section {
-    margin-bottom: 2rem;
-  }
-
-  .admin-list {
-    display: grid;
-    gap: 1rem;
-  }
-
-  .admin-card {
-    background-color: white;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgb(193, 193, 193);
-    min-width: 30vw;
-  }
-
-  .admin-card button {
-    padding: 0.75rem 1rem;
-    cursor: pointer;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
