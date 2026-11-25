@@ -2,3 +2,16 @@
   padding: 0.2rem;
   margin-left: 1rem;
 }
+.bid-form-button {
+  padding: 0.75rem 1rem;
+  margin-left: 1rem;
+  background: var(--accent);
+  color: var(--primary);
+  border: none;
+  border-radius: var(--radius);
+}
+
+.bid-form-button:hover {
+  background: var(--primary);
+  color: var(--surface);
+}
